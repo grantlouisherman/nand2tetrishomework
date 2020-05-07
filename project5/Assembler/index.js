@@ -172,35 +172,48 @@ function Parser (instructions) {
     }
     this.handleCBinary = (CInstruction) => {
         const C_BINARY_HEAD = '111';
-        const InstructionSplit = CInstruction.split('=');
-        const INSTRUCTION_LEFT_SIDE = InstructionSplit[0];
-        const INSTRUCTION_RIGHT_SIDE = InstructionSplit[1];
+        const InstructionSplit = CInstruction.replace(/\s/g,'')
         const dest = () => {
+            const INSTRUCTION_LEFT_SIDE = InstructionSplit.split("=")[0];
             if(INSTRUCTION_LEFT_SIDE in C_DEST_TABLE){
                 return C_DEST_TABLE[INSTRUCTION_LEFT_SIDE];
             }
-            throw Error('C Instruction is not in DEST Table', INSTRUCTION_LEFT_SIDE);
+            console.log("ERROR", CInstruction)
+            console.error('DEST', CInstruction)
         }
 
         const comp = () => {
-            const COMP = INSTRUCTION_RIGHT_SIDE.split(';')[0];
+            let RIGHT_SIDE = InstructionSplit;
+            if(RIGHT_SIDE.includes("=")){
+                RIGHT_SIDE = InstructionSplit.split("=")[1];
+            }
+            const COMP = RIGHT_SIDE.includes(";") ? 
+            RIGHT_SIDE.split(';')[0] : RIGHT_SIDE;
             if(COMP in C_COMP_TABLE){
                 return C_COMP_TABLE[COMP];
             }
-            return Error('C Instruction is not in DEST Table', COMP);
+            console.log("ERROR", CInstruction)
+            console.error('COMP', CInstruction)
         } 
         const jump = () => {
-            const JUMP = INSTRUCTION_RIGHT_SIDE.split(';');
-            if(JUMP.length < 2){
+            if(!InstructionSplit.includes(";")){
                 return '000'
             }
+            let RIGHT_SIDE = InstructionSplit;
+            if(RIGHT_SIDE.includes("=")){
+                RIGHT_SIDE = InstructionSplit.split("=")[1];
+            }
+            const JUMP = RIGHT_SIDE.includes(";") ? 
+            RIGHT_SIDE.split(';')[1] : RIGHT_SIDE;
             if(JUMP in C_JUMP_TABLE){
                 return C_JUMP_TABLE[JUMP];
             }
-            return Error('C Instruction is not in DEST Table', JUMP);
+            console.log("ERROR", CInstruction)
+            console.error('JUMP', CInstruction)
+
 
         }
-        return `${C_BINARY_HEAD}${dest()}${comp()}${jump()}`
+        return `${C_BINARY_HEAD}${CInstruction.includes("=") && dest()}${comp()}${jump()}`
     } 
     this.convertTokensIntoBinary = () => {
         this.tokens.filter(token => token.type != 'WHITE_SPACE').forEach(token => {
@@ -222,8 +235,8 @@ const parser = new Parser(assemblyCode);
 parser.firstPassForSymbols(assemblyCode);
 // console.log(parser.instructions)
 parser.Tokenizer();
-console.log(parser.tokens)
+// console.log(parser.tokens)
 parser.convertTokensIntoBinary();
-// console.log(parser.output);
+console.log(parser.output);
 
 
