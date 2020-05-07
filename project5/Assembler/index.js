@@ -174,6 +174,9 @@ function Parser (instructions) {
         const C_BINARY_HEAD = '111';
         const InstructionSplit = CInstruction.replace(/\s/g,'')
         const dest = () => {
+            if(!InstructionSplit.includes("=")){
+                return '000';
+            }
             const INSTRUCTION_LEFT_SIDE = InstructionSplit.split("=")[0];
             if(INSTRUCTION_LEFT_SIDE in C_DEST_TABLE){
                 return C_DEST_TABLE[INSTRUCTION_LEFT_SIDE];
@@ -213,7 +216,7 @@ function Parser (instructions) {
 
 
         }
-        return `${C_BINARY_HEAD}${CInstruction.includes("=") && dest()}${comp()}${jump()}`
+        return `${C_BINARY_HEAD}${dest()}${comp()}${jump()}`
     } 
     this.convertTokensIntoBinary = () => {
         this.tokens.filter(token => token.type != 'WHITE_SPACE').forEach(token => {
