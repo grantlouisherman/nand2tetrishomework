@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs');
+const { readFileSync, writeFileSync } = require('fs');
 
 
 
@@ -41,7 +41,7 @@ const C_COMP_TABLE = {
     'D-1': '0001110',
     'A-1': '0110010',
     'M-1': '1110010',
-    'D+A': '000010',
+    'D+A': '0000010',
     'D+M': '100010',
     'D-A': '0010011',
     'D-M': '1010011',
@@ -79,6 +79,12 @@ const getFileFromInput = () => {
     const assemblyCode = process.argv[2];
     return readFileSync(assemblyCode, {encoding:'utf8', flag:'r'});
 }
+
+const writeFileOutput = (data) => {
+    const fileName = process.argv[3];
+    return writeFileSync( fileName, data);
+}
+
 
 function Token(type, value){
     // Type of Command
@@ -245,6 +251,7 @@ parser.firstPassForSymbols(assemblyCode);
 parser.Tokenizer();
 // console.log(parser.tokens)
 parser.convertTokensIntoBinary();
-console.log(parser.output);
+// console.log(parser.output);
+writeFileOutput(parser.output);
 
 

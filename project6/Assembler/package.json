@@ -1,0 +1,16 @@
+{
+    "name": "assembler",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "add": "node index.js ../../../nand2tetris/projects/06/add/Add.asm ../../submissions/Add.hack",
+      "rect": "node index.js ../../../nand2tetris/projects/06/rect/Rect.asm ../../submissions/Rect.hack",
+      "pong": "node index.js ../../../nand2tetris/projects/06/pong/Pong.asm ../../submissions/Pong.hack",
+      "max": "node index.js ../../../nand2tetris/projects/06/max/Max.asm ../../submissions/Max.hack",
+      "hack": "npm run add && npm run rect && npm run pong && npm run max"
+    },
+    "author": "",
+    "license": "ISC"
+  }
