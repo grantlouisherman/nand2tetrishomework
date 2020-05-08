@@ -252,6 +252,7 @@ parser.Tokenizer();
 // console.log(parser.tokens)
 parser.convertTokensIntoBinary();
 // console.log(parser.output);
+// writing output to file
 writeFileOutput(parser.output);
 
 
